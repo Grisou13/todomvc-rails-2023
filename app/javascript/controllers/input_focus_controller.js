@@ -9,5 +9,9 @@ export default class extends Controller {
       this.element.value.length,
       this.element.value.length
     )
+    this.element.addEventListener('blur', () => {
+      Turbo.visit(window.location)
+    })
+
   }
 }
