@@ -34,9 +34,31 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to todos_url
   end
 
+  test "should toggle all todos" do
+    assert_difference('Todo.completed.count', 2) do
+      patch toggle_todos_url
+    end
+    assert_redirected_to todos_url
+
+    assert_difference('Todo.completed.count', -3) do
+      patch toggle_todos_url
+    end
+    assert_redirected_to todos_url
+  end
+
   test "should destroy todo" do
     assert_difference("Todo.count", -1) do
       delete todo_url(@todo)
+    end
+
+    assert_redirected_to todos_url
+  end
+
+  test "should destroy all completed todos" do
+    todos(:two).update!(completed: true)
+
+    assert_difference('Todo.completed.count', -2) do
+      delete completed_todos_url
     end
 
     assert_redirected_to todos_url
